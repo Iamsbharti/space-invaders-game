@@ -25,4 +25,22 @@
     
     //Draw the shooter
         squares[currentShooterIndex].classList.add('shooter')
+    
+    //move the shooter along the line
+        function moveShooter(e){
+            squares[currentShooterIndex].classList.remove('shooter')
+            switch(e.keyCode){
+                case 37:
+                    if(currentShooterIndex % width !==0) currentShooterIndex -=1 //move left
+                    break;
+                case 39:
+                    if(currentShooterIndex % width < width-1)currentShooterIndex +=1 //move right
+                    break;
+            }
+            squares[currentShooterIndex].classList.add('shooter')
+            
+        }
+
+    //add event listener for moving shooter
+        document.addEventListener('keydown',moveShooter)
  })
