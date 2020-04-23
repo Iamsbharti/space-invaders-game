@@ -66,7 +66,9 @@
           }
           //add invader class to new invaders array
           for (let i = 0; i <= alienInvaders.length - 1; i++) {
-            squares[alienInvaders[i]].classList.add('invader')
+              if(!alienInvadersTakeDown.includes(i)){
+                squares[alienInvaders[i]].classList.add('invader')
+              }
           }
           //Game over condition 1
             if(squares[currentShooterIndex].classList.contains('invader', 'shooter')) {
@@ -81,10 +83,58 @@
                     clearInterval(invaderId)
                 }
             }
+          //Win Condition
+            if(alienInvadersTakeDown.length === alienInvaders.length){
+                resultDisplay.textContent="You Win!!"
+                clearInterval(invaderId)
+            }
       }
       //Add interval for moving invaders
       invaderId = setInterval(moveInvaders, 500)
 
+    //Shoot Aliens
+    function shoot(e){
+        let laserId
+        let currentLaserIndex = currentShooterIndex
+        //console.log(`currentLaserIndex-${currentLaserIndex}-currentShooterIndex-${currentShooterIndex}`)
+        //move the laser from the shooter to the alien invader
 
+        function moveLaser(){
+            squares[currentLaserIndex].classList.remove('laser')
+            currentLaserIndex -= width //move a row up
+            squares[currentLaserIndex].classList.add('laser')
+            
+            //remove/kill aliens
+            if(squares[currentLaserIndex].classList.contains('invader')){
+                squares[currentLaserIndex].classList.remove('laser')
+                squares[currentLaserIndex].classList.remove('invader')
+                squares[currentLaserIndex].classList.add('boom')
+
+                //remove boom after 250ms
+                setTimeout(() => squares[currentLaserIndex].classList.remove('boom'),250)
+                clearInterval(laserId)
+
+                //add taken down invaders to a new array
+                const alientakenDown = alienInvaders.indexOf(currentLaserIndex)
+                alienInvadersTakeDown.push(alientakenDown)
+                result++
+                resultDisplay.textContent = result
+            }
+
+            //remove laser
+            if(currentLaserIndex < width){
+                clearInterval(laserId)
+                setTimeout(()=> squares[currentLaserIndex].classList.remove('laser'),100)
+            }
+
+        }
+        switch(e.keyCode){
+            case 32:
+                laserId:setInterval(moveLaser,100)
+                break;
+        }
+    }
+    //eventlistener for shoot method
+    document.addEventListener('keyup',shoot)
 
  })
