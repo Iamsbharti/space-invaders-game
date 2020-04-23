@@ -111,7 +111,7 @@
                 squares[currentLaserIndex].classList.add('boom')
 
                 //remove boom after 250ms
-                setTimeout(() => squares[currentLaserIndex].classList.remove('boom'),190)
+                setTimeout(() => squares[currentLaserIndex].classList.remove('boom'),220)
                 clearInterval(laserId)
 
                 //add taken down invaders to a new array
